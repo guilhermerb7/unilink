@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Unilink - Comunidades</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav {
+            background-color: #003366;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        #container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        h2 {
+            color: #003366;
+            margin-bottom: 20px;
+        }
+        .community-card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .community-info {
+            max-width: 75%;
+        }
+        .community-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #003366;
+        }
+        .community-name a {
+            color: #003366;
+            text-decoration: none;
+        }
+        .community-name a:hover {
+            text-decoration: underline;
+        }
+        .community-desc {
+            font-size: 14px;
+            color: #555;
+        }
+        .join-btn {
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .join-btn:hover {
+            background-color: #365899;
+        }
+    </style>
+</head>
+<body>
+    <header>Unilink</header>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#">Perfil</a>
+        <a href="#">Recados</a>
+        <a href="#">Amigos</a>
+        <a href="#">Comunidades</a>
+    </nav>
+
+    <div id="container">
+        <h2>Comunidades</h2>
+
+        <div class="community-card">
+            <div class="community-info">
+                <div class="community-name"><a href="gamers-unilink.html">Gamers Unilink</a></div>
+                <div class="community-desc">Discussões sobre jogos, dicas, eventos e tudo relacionado a games.</div>
+            </div>
+            <button class="join-btn" onclick="toggleJoin(this)">Participar</button>
+        </div>
+
+        <div class="community-card">
+            <div class="community-info">
+                <div class="community-name"><a href="leitores-livros.html">Leitores & Livros</a></div>
+                <div class="community-desc">Espaço para amantes de leitura compartilharem resenhas e sugestões.</div>
+            </div>
+            <button class="join-btn" onclick="toggleJoin(this)">Participar</button>
+        </div>
+
+        <div class="community-card">
+            <div class="community-info">
+                <div class="community-name"><a href="fitness-saude.html">Fitness & Saúde</a></div>
+                <div class="community-desc">Comunidade para trocar dicas de exercícios, alimentação e motivação.</div>
+            </div>
+            <button class="join-btn" onclick="toggleJoin(this)">Participar</button>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleJoin(button) {
+            if(button.textContent === "Participar") {
+                button.textContent = "Sair";
+                button.style.backgroundColor = "#f44336"; // vermelho
+            } else {
+                button.textContent = "Participar";
+                button.style.backgroundColor = "#4267B2"; // azul original
+            }
+        }
+    </script>
+</body>
+</html>

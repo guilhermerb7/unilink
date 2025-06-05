@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanças - Criptomoedas em Tempo Real</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f0f2f5;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .green { color: green; }
+        .red { color: red; }
+        canvas {
+            width: 100px !important;
+            height: 30px !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>📈 Finanças: Top 7 Criptomoedas em tempo real</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Criptomoeda</th>
+                <th>Preço (BRL)</th>
+                <th>Variação (24h)</th>
+                <th>Volume (24h)</th>
+                <th>Gráfico</th>
+            </tr>
+        </thead>
+        <tbody id="crypto-table">
+            <!-- Dados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        const ids = ['bitcoin', 'ethereum', 'tether', 'ripple', 'bnb', 'solana', 'usd-coin', 'dogecoin'];
+        const names = {
+            'bitcoin': 'Bitcoin',
+            'ethereum': 'Ethereum',
+            'tether': 'Tether',
+            'ripple': 'XRP',
+            'bnb': 'BNB',
+            'solana': 'Solana',
+            'usd-coin': 'USDC',
+            'dogecoin': 'Dogecoin'
+        };
+
+        async function fetchPrices() {
+            const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&ids=${ids.join(',')}&order=market_cap_desc&sparkline=true&price_change_percentage=24h`;
+            const res = await fetch(url);
+            const data = await res.json();
+            const table = document.getElementById('crypto-table');
+            table.innerHTML = ''; // Limpa antes de atualizar
+
+            data.forEach((coin, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${coin.name} (${coin.symbol.toUpperCase()})</td>
+                    <td>R$ ${coin.current_price.toLocaleString()}</td>
+                    <td class="${coin.price_change_percentage_24h >= 0 ? 'green' : 'red'}">
+                        ${coin.price_change_percentage_24h.toFixed(2)}%
+                    </td>
+                    <td>R$ ${coin.total_volume.toLocaleString()}</td>
+                    <td><canvas id="sparkline-${index}"></canvas></td>
+                `;
+                table.appendChild(tr);
+
+                // Gráfico miniatura (sparkline)
+                const ctx = document.getElementById(`sparkline-${index}`).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: coin.sparkline_in_7d.price.map((_, i) => i),
+                        datasets: [{
+                            data: coin.sparkline_in_7d.price,
+                            borderColor: coin.price_change_percentage_24h >= 0 ? 'green' : 'red',
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { display: false },
+                            y: { display: false }
+                        }
+                    }
+                });
+            });
+        }
+
+        // Atualiza a cada 30 segundos
+        fetchPrices();
+        setInterval(fetchPrices, 30000);
+    </script>
+</body>
+</html>

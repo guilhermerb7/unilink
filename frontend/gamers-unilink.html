@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Unilink - Comunidade Gamers Unilink</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav {
+            background-color: #003366;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        #container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #003366;
+            margin-bottom: 10px;
+        }
+        .community-desc {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        #posts-section {
+            margin-top: 30px;
+        }
+        .post {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .post-header {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .post-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .like-btn {
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .like-btn.liked {
+            background-color: #365899;
+        }
+        #new-post {
+            margin-top: 40px;
+        }
+        #new-post textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        #new-post button {
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #new-post button:hover {
+            background-color: #365899;
+        }
+    </style>
+</head>
+<body>
+    <header>Unilink</header>
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="recados.html">Recados</a>
+        <a href="amigos.html">Amigos</a>
+        <a href="comunidades.html">Comunidades</a>
+    </nav>
+
+    <div id="container">
+        <h2>Gamers Unilink</h2>
+        <div class="community-desc">
+            Discussões sobre jogos, dicas, eventos e tudo relacionado a games.  
+            Aqui você pode compartilhar suas experiências, encontrar parceiros para jogar e ficar por dentro das novidades.
+        </div>
+
+        <section id="posts-section">
+            <h3>Posts Recentes</h3>
+            <div id="posts-list">
+                <!-- Posts aparecerão aqui -->
+            </div>
+        </section>
+
+        <section id="new-post">
+            <h3>Escreva um post</h3>
+            <textarea id="post-text" placeholder="O que você quer compartilhar com a comunidade?"></textarea>
+            <button onclick="addPost()">Publicar</button>
+        </section>
+    </div>
+
+    <script>
+        // Carregar posts do localStorage
+        function loadPosts() {
+            const postsList = document.getElementById("posts-list");
+            const posts = JSON.parse(localStorage.getItem("gamersPosts")) || [];
+            postsList.innerHTML = "";
+
+            posts.forEach((post, index) => {
+                const postDiv = document.createElement("div");
+                postDiv.className = "post";
+
+                const header = document.createElement("div");
+                header.className = "post-header";
+                header.textContent = post.date;
+
+                // Botão de curtir
+                const likeBtn = document.createElement("button");
+                likeBtn.className = "like-btn";
+                likeBtn.textContent = `Curtir (${post.likes || 0})`;
+                likeBtn.onclick = () => {
+                    post.likes = (post.likes || 0) + 1;
+                    localStorage.setItem("gamersPosts", JSON.stringify(posts));
+                    loadPosts();
+                };
+
+                header.appendChild(likeBtn);
+                postDiv.appendChild(header);
+
+                const textP = document.createElement("p");
+                textP.className = "post-text";
+                textP.textContent = post.text;
+                postDiv.appendChild(textP);
+
+                postsList.appendChild(postDiv);
+            });
+        }
+
+        // Adicionar novo post
+        function addPost() {
+            const textarea = document.getElementById("post-text");
+            const text = textarea.value.trim();
+            if(text === "") {
+                alert("Por favor, escreva algo antes de publicar.");
+                return;
+            }
+            const posts = JSON.parse(localStorage.getItem("gamersPosts")) || [];
+            const newPost = {
+                text: text,
+                date: new Date().toLocaleString(),
+                likes: 0
+            };
+            posts.unshift(newPost); // adiciona no começo da lista
+            localStorage.setItem("gamersPosts", JSON.stringify(posts));
+            textarea.value = "";
+            loadPosts();
+        }
+
+        // Inicializa ao carregar a página
+        window.onload = loadPosts;
+    </script>
+</body>
+</html>

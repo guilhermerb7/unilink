@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Unilink - Rede Social</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #df1414;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    nav {
+      background-color: #df1414;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #df1414;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+      gap: 20px;
+    }
+
+    .container-section, .container-section2 {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .container-section2 {
+      margin-bottom: 300px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    textarea, input[type="file"], input[type="text"] {
+      width: 100%;
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #df1414;
+      color: white;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #365899;
+    }
+
+    .post {
+      background-color: #f9f9f9;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .post-header {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #888;
+      font-size: 16px;
+    }
+
+    .delete-btn:hover {
+      color: #f00;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin: 10px auto;
+      max-width: 500px;
+    }
+
+    .search-bar input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      flex-grow: 1;
+    }
+
+    .search-bar button {
+      padding: 8px 12px;
+      background: #df1414;
+      color: white;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    .search-bar button:hover {
+      background: #365899;
+    }
+
+    .redesSociais, .global {
+      width: 100px;
+      height: auto;
+      margin-top: 40px;
+    }
+
+    /* NOVO: Adiciona destaque para cada post */
+    .post {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .post:hover {
+      background-color: #e6f0ff;
+      transform: scale(1.02);
+    }
+
+    /* NOVO: Botão de limpar todos os posts */
+    #clearPostsBtn {
+      background-color: #ff3333;
+      margin-bottom: 10px;
+    }
+
+    #clearPostsBtn:hover {
+      background-color: #cc0000;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    Unilink
+    <img src="/assets/icone-logo.avif" alt="logo" width="30px" />
+  </header>
+
+  <nav>
+  <a href="#">Início</a>
+  <a href="#">Perfil</a>
+  <a href="financas.html">Finanças</a>
+  <a href="atualizacoes.html">Atualizações</a>
+  <a href="/comunidades.html">Comunidades</a>
+  <a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a>
+</nav>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Pesquisar..." />
+    <button id="searchBtn">🔍</button>
+  </div>
+
+  <div id="container">
+    <div id="postarContainer" class="container-section">
+      <div class="card">
+        <h2>Poste algo:</h2>
+        <input id="userName" placeholder="Seu nome" />
+        <textarea id="postText" placeholder="O que você está pensando?"></textarea>
+        <input type="file" id="postImage" accept="image/*" />
+        <button onclick="postar()">Postar</button>
+      </div>
+    </div>
+
+    <div id="postsContainer" class="container-section2">
+      <div class="card">
+        <h2>Posts recentes</h2>
+        <button id="clearPostsBtn" onclick="limparTodosPosts()">🗑️ Limpar Todos</button>
+        <div id="feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 Rede Social. Todos os direitos reservados.</footer>
+
+  <script>
+    function carregarPosts() {
+      const feed = document.getElementById('feed');
+      feed.innerHTML = '';
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+      posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
+
+        const header = document.createElement('div');
+        header.className = 'post-header';
+        header.textContent = post.nome + ' - ' + new Date(post.data).toLocaleString();
+
+        const text = document.createElement('p');
+        text.textContent = post.texto;
+
+        postElement.appendChild(header);
+        postElement.appendChild(text);
+
+        if (post.imagem) {
+          const img = document.createElement('img');
+          img.src = post.imagem;
+          postElement.appendChild(img);
+        }
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = '❌';
+        deleteBtn.onclick = () => {
+          deletarPost(post.id);
+        };
+        postElement.appendChild(deleteBtn);
+
+        feed.appendChild(postElement);
+      });
+    }
+
+    function postar() {
+      const nome = document.getElementById('userName').value.trim();
+      const texto = document.getElementById('postText').value.trim();
+      const imagemInput = document.getElementById('postImage');
+
+      if (!nome || !texto) {
+        alert('Por favor, preencha o nome e o texto!');
+        return;
+      }
+
+      const leitor = new FileReader();
+      leitor.onload = function(e) {
+        const imagemBase64 = imagemInput.files[0] ? e.target.result : null;
+        salvarPost(nome, texto, imagemBase64);
+      };
+      if (imagemInput.files[0]) {
+        leitor.readAsDataURL(imagemInput.files[0]);
+      } else {
+        salvarPost(nome, texto, null);
+      }
+    }
+
+    function salvarPost(nome, texto, imagem) {
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      const post = {
+        id: Date.now(),
+        nome,
+        texto,
+        imagem,
+        data: new Date().toISOString()
+      };
+      posts.unshift(post);
+      localStorage.setItem('posts', JSON.stringify(posts));
+      carregarPosts();
+      document.getElementById('userName').value = '';
+      document.getElementById('postText').value = '';
+      document.getElementById('postImage').value = '';
+    }
+
+    function deletarPost(id) {
+      let posts = JSON.parse(localStorage.getItem('posts')) || [];
+      posts = posts.filter(post => post.id !== id);
+      localStorage.setItem('posts', JSON.stringify(posts));
+      carregarPosts();
+    }
+
+    function limparTodosPosts() {
+      if (confirm('Tem certeza de que deseja apagar todos os posts?')) {
+        localStorage.removeItem('posts');
+        carregarPosts();
+      }
+    }
+
+    window.onload = carregarPosts;
+  </script>
+</body>
+</html>
